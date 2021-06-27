@@ -16,15 +16,14 @@ namespace Backend
             P2C //player vs Computer
         }
 
-        public GameManager(eGameType i_gameType, int i_boardSize, Backend.Board i_gameBoard)
+        public GameManager(eGameType i_gameType, int i_boardSize, Backend.Board i_gameBoard, Player i_FirstPlayer, Player i_SecondPlayer = null)   // DEFAULT PARAM
         {
-            //Backend.Board gameBoard = new Backend.Board(boardSize);
             m_board = i_gameBoard;
-            m_player1 = new Player(Player.e_Sign.X, Player.e_InitialTurn.First, !v_PlayerIsComputer);
+            m_player1 = i_FirstPlayer;
             if (i_gameType == eGameType.P2C)
-                m_player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, v_PlayerIsComputer);
+                m_player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, v_PlayerIsComputer, "Computer");
             else
-                m_player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, !v_PlayerIsComputer);
+                m_player2 = i_SecondPlayer;
         }
 
         public bool IsValidCell(int i_Row, int i_Col)

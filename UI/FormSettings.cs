@@ -7,22 +7,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Backend;
 
 namespace UI
 {
     public partial class FormSettings : Form
     {
         //public delegate void  
+        public const int k_MaxSizeOfBoard = 9;
+        public const int k_MinSizeOfBoard = 3;
+        public GameManager m_Game;
+        private Player m_Player1, m_Player2 = null;
+        public int m_UserChoiceBoardSize = 3; // default
+        private GameManager.eGameType m_GameType = GameManager.eGameType.P2C; // default
 
 
         public FormSettings()
         {
             InitializeComponent();
-            
+            // WHAT ELSE?
         }
 
         private void textBoxPlayer2CheckChanged(object sender, EventArgs e) 
         {
+            string player2name = (sender as TextBox).Text;
+            m_Player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, false, player2name);
 
         }
 
@@ -32,19 +41,24 @@ namespace UI
             if (sender == null)
                 throw new InvalidOperationException("error");
 
-            Button button = (Button)sender; 
+            Button button = (Button)sender;
+            Board gameBoard = new Board(m_UserChoiceBoardSize);
+            m_Game = new GameManager(m_GameType, m_UserChoiceBoardSize, gameBoard, m_Player1, m_Player2);
             //start program
-
-
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            string player1name = (sender as TextBox).Text;
+            m_Player1 = new Player(Player.e_Sign.X, Player.e_InitialTurn.First, false, player1name);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
+        {// add second player (not computer)
+            CheckBox box = sender as CheckBox;
+            m_GameType = box.Checked ? GameManager.eGameType.P2P : GameManager.eGameType.P2C;
+            textBoxNamePlayer2.Enabled = box.Checked ? true : false;
+            // FIX - can't really change name
 
         }
 
@@ -65,7 +79,8 @@ namespace UI
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            
+            string player1name = (sender as TextBox).Text;
+            m_Player1 = new Player(Player.e_Sign.X, Player.e_InitialTurn.First, false, player1name);
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -78,6 +93,18 @@ namespace UI
 
         }
 
+        private void numericUpDownCols_ValueChanged(object sender, EventArgs e)
+        {
+            NumericUpDown cols = sender as NumericUpDown;
+            m_UserChoiceBoardSize = (int)cols.Value;
+            numericUpDownRows.Value = cols.Value;
+        }
 
+        private void numericUpDownRows_ValueChanged(object sender, EventArgs e)
+        {
+            NumericUpDown rows = sender as NumericUpDown;
+            m_UserChoiceBoardSize = (int)rows.Value;
+            numericUpDownCols.Value = rows.Value;
+        }
     }
 }

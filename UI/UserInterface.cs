@@ -6,8 +6,8 @@ namespace UI
 {
     public class UserInterface
     {
-        private readonly FormSettings settingsGui = new FormSettings();
-        private readonly FormBoard boardGui = new FormBoard();
+        //private readonly GameSettingaForm settingsGui = new GameSettingaForm();
+        //private readonly FormBoard boardGui = new FormBoard();
         private readonly Menu r_StartMenu = new Menu();
         public const int k_MaxSizeOfBoard = 9;
         public const int k_MinSizeOfBoard = 3;
@@ -15,12 +15,12 @@ namespace UI
         public void RunProgram()
         {
             
-            settingsGui.ShowDialog();
+            //settingsGui.ShowDialog();
 
             //כפתור התחל == מודיע
             // מאזין - this.button1.Click
-            settingsGui.OnGameStarted();
-            boardGui.ShowDialog();
+            //settingsGui.OnGameStarted();
+            //boardGui.ShowDialog();
 
             bool ignoreable = false;
             int userBoardSizeChoice = 0;
@@ -28,9 +28,9 @@ namespace UI
             int rowChosen, colChosen;
             Backend.Player currentPlayer, otherPlayer;
 
-            Console.WriteLine(
-            @"Hey and welcome to ^^^tic tac toe^^^
-please type the board size you would like (between 3 and 9)" + Environment.NewLine);
+//            Console.WriteLine(
+//            @"Hey and welcome to ^^^tic tac toe^^^
+//please type the board size you would like (between 3 and 9)" + Environment.NewLine);
             userBoardSizeChoice = GetInputChoiceFromTheUser(ref ignoreable, out bool valid);
             BoardSizeInputValidtion(userBoardSizeChoice, ref ignoreable);
 
@@ -187,7 +187,7 @@ please type the board size you would like (between 3 and 9)" + Environment.NewLi
         public Backend.GameManager GetUserInitialChoiceForGameType(Backend.Board i_GameBoard, int i_UserBoardSizeChoice, ref bool io_Quit)
         {
             Backend.GameManager game = null;
-            bool validInput = false;
+            bool validInput = false;  // SURELY VALID
 
             while (!validInput && !io_Quit)
             {

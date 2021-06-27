@@ -13,8 +13,11 @@ namespace UI
         {
             //FormSettings form = new FormSettings();
             // Application.EnableVisualStyles();
-            UserInterface game = new UserInterface();
-            game.RunProgram();
+            //UserInterface game = new UserInterface();
+            //game.RunProgram();
+
+            FormBoard gameForm = new FormBoard();
+            gameForm.ShowDialog();
         }
     }
 }

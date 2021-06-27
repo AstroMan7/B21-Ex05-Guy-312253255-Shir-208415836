@@ -9,12 +9,16 @@ namespace Backend
         public e_Sign m_Sign { get; set; }
 
         private bool m_IsComputer;
+
         private e_InitialTurn m_InitialTurn;
 
         public int m_Points { get; set; }
 
-        public Player(e_Sign i_Sign, e_InitialTurn i_InitialTurn, bool i_Computer)
+        public string m_Name { get; set; }
+
+        public Player(e_Sign i_Sign, e_InitialTurn i_InitialTurn, bool i_Computer, string i_Name)
         {
+            m_Name = i_Name;
             m_Sign = i_Sign;
             m_Points = 0;
             m_InitialTurn = i_InitialTurn;
