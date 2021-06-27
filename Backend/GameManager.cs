@@ -10,6 +10,10 @@ namespace Backend
         public Player m_player1 { get; set; }
         public Player m_player2 { get; set; }
 
+        private Random m_RndAIchoice;
+        private Random m_RndEdgesCol;
+        private Random m_RndEdgesRow;
+
         public enum eGameType
         {
             P2P = 1, //player vs player
@@ -21,7 +25,12 @@ namespace Backend
             m_board = i_gameBoard;
             m_player1 = i_FirstPlayer;
             if (i_gameType == eGameType.P2C)
+            {
                 m_player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, v_PlayerIsComputer, "Computer");
+                m_RndAIchoice = new Random();
+                m_RndEdgesCol = new Random();
+                m_RndEdgesRow = new Random();
+            }
             else
                 m_player2 = i_SecondPlayer;
         }
@@ -148,21 +157,15 @@ namespace Backend
             io_PreviousPlayer = io_NewTurnPlayer;
             io_NewTurnPlayer = tmpPlayer;
         }
-        public void AIChooseComputerCordinates(out int o_Row, out int o_Col, int i_BoardSize, Backend.Board i_GameBoard, int i_CompSign)
+        public void AIChooseComputerCordinates(out int o_Row, out int o_Col, int i_BoardSize, Backend.Board i_GameBoard)
         {
-
-            // Console.WriteLine("Computer's turn");
             bool hasChosenCell = false;
-            Random rnd = new Random();
-            Random rndEdgesCol = new Random();
-            Random rndEdgesRow = new Random();
 
-            o_Row = rnd.Next(1, i_BoardSize + 1);  // Maybe move to gamemanager or player
-            o_Col = rnd.Next(1, i_BoardSize + 1);
+            o_Row = m_RndAIchoice.Next(1, i_BoardSize + 1);  // Maybe move to gamemanager or player
+            o_Col = m_RndAIchoice.Next(1, i_BoardSize + 1);
 
-
-            int compuersChoiceRow = rndEdgesRow.Next(2, i_BoardSize - 1);
-            int computersChoiceCol = rndEdgesCol.Next(2, i_BoardSize - 1);
+            int compuersChoiceRow = m_RndEdgesRow.Next(2, i_BoardSize - 1);
+            int computersChoiceCol = m_RndEdgesCol.Next(2, i_BoardSize - 1);
             if (i_GameBoard.IsEmptyCell(compuersChoiceRow, 1))
             {
                 hasChosenCell = true;
@@ -187,29 +190,23 @@ namespace Backend
                 o_Row = i_BoardSize;
                 o_Col = computersChoiceCol;
             }
+
             int rowIndex = 1;
-            //if player has e_Sign next to chosen cell, rand again
-            /*
-            if(i_GameBoard.getCellContent(o_Row,o_Col) == (int)e_Sign.X)
-            {
-                o_Row = rnd.Next(1, i_BoardSize + 1); 
-                o_Col = rnd.Next(1, i_BoardSize + 1);
-                hasChosenCell = true;
-            }
-            */
-            //now if theres an empty row use it and dont block player
             while ((rowIndex <= i_BoardSize) && (!hasChosenCell))
             {
                 if (i_GameBoard.IsEmptyRow(rowIndex))
                 {
                     hasChosenCell = true;
                     o_Row = rowIndex;
-                    o_Col = rnd.Next(1, i_BoardSize + 1); //row is empty, can rand a column
+                    o_Col = m_RndAIchoice.Next(1, i_BoardSize + 1); //row is empty, can rand a column
                 }
                 rowIndex++;
             }
+            o_Col--;
+            o_Row--;
 
         }
+
         public string GetScore()
         {
             string scoreString = "The Game Score, at this point, is:" + Environment.NewLine;

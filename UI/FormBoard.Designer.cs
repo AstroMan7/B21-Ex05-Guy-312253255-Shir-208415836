@@ -29,11 +29,13 @@ namespace UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.boardLayOut = new System.Windows.Forms.FlowLayoutPanel();
             this.labelPlayer1 = new System.Windows.Forms.Label();
             this.score1 = new System.Windows.Forms.Label();
             this.labelPlayer2 = new System.Windows.Forms.Label();
             this.score2 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // boardLayOut
@@ -79,6 +81,10 @@ namespace UI
             this.score2.TabIndex = 3;
             this.score2.Text = "0";
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // FormBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -106,5 +112,6 @@ namespace UI
         private System.Windows.Forms.Label score1;
         private System.Windows.Forms.Label labelPlayer2;
         private System.Windows.Forms.Label score2;
+        private System.Windows.Forms.Timer timer1;
     }
 }

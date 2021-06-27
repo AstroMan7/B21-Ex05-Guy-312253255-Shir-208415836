@@ -59,7 +59,7 @@ namespace Backend
 
         public void SetCell(int i_Row, int i_Col, Player.e_Sign i_Value)
         {
-            m_BoardMatrix[i_Row - 1, i_Col - 1] = (int)i_Value;
+            m_BoardMatrix[i_Row, i_Col] = (int)i_Value;
         }
 
         public override string ToString()
