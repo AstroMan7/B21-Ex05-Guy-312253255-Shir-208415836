@@ -28,6 +28,7 @@ namespace UI
             // WHAT ELSE?
         }
 
+
         private void textBoxPlayer2CheckChanged(object sender, EventArgs e) 
         {
             string player2name = (sender as TextBox).Text;
@@ -40,13 +41,21 @@ namespace UI
         {
             if (sender == null)
                 throw new InvalidOperationException("error");
-
-            Button button = (Button)sender;
-            Board gameBoard = new Board(m_UserChoiceBoardSize);
-            m_Game = new GameManager(m_GameType, m_UserChoiceBoardSize, gameBoard, m_Player1, m_Player2);
-            
-            Close();
-            //start program
+            Visible = true;
+            if (m_Player1 == null || (m_Player2 != null && m_Player2.m_Name == ""))
+            {
+                DialogResult dialog;
+                StringBuilder ErrorToUser;
+                ErrorToUser = new StringBuilder();
+                ErrorToUser.AppendLine("please enter a valid player name");
+                dialog = MessageBox.Show(ErrorToUser.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Board gameBoard = new Board(m_UserChoiceBoardSize);
+                m_Game = new GameManager(m_GameType, m_UserChoiceBoardSize, gameBoard, m_Player1, m_Player2);
+                Close();
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -60,8 +69,8 @@ namespace UI
             CheckBox box = sender as CheckBox;
             m_GameType = box.Checked ? GameManager.eGameType.P2P : GameManager.eGameType.P2C;
             textBoxNamePlayer2.Enabled = box.Checked ? true : false;
-            textBoxNamePlayer2.ReadOnly = false;
-            textBoxNamePlayer2.Text = "";
+            textBoxNamePlayer2.ReadOnly = box.Checked ? false : true;
+            textBoxNamePlayer2.Text = box.Checked ? "" : "[Computer]";
         }
 
         private void FormSettings_Load(object sender, EventArgs e)
@@ -82,7 +91,10 @@ namespace UI
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             string player2name = (sender as TextBox).Text;
-            m_Player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, false, player2name);
+            if(player2name != null)
+            {
+                m_Player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, false, player2name);
+            }
         }
 
         private void label2_Click(object sender, EventArgs e)

@@ -224,6 +224,7 @@ namespace UI
             this.AccessibleName = "formSettings";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(320, 320);
             this.Controls.Add(this.numericUpDownCols);
             this.Controls.Add(this.numericUpDownRows);
@@ -241,6 +242,7 @@ namespace UI
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "FormSettings";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Settings";
             this.Load += new System.EventHandler(this.FormSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

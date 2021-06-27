@@ -5,8 +5,8 @@ namespace Backend
     //HI
     public class Board
     {
-        private int m_NumOfRowsAndCols;
-        private int[,] m_BoardMatrix;
+        readonly int m_NumOfRowsAndCols;
+        readonly int[,] m_BoardMatrix;
 
 
         public Board(int i_NumOfRowsAndCols)

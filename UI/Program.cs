@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace UI
@@ -11,13 +12,17 @@ namespace UI
     {
         public static void Main()
         {
+
             //FormSettings form = new FormSettings();
-            // Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             //UserInterface game = new UserInterface();
             //game.RunProgram();
 
             FormBoard gameForm = new FormBoard();
+    
             gameForm.ShowDialog();
+
+            Application.Exit();
         }
     }
 }

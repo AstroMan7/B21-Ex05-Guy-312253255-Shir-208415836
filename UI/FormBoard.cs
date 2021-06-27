@@ -32,30 +32,48 @@ namespace UI
 
         public FormBoard()
         {
+            //Visible = false;
             InitializeComponent();
-            Visible = false;
+            //Visible = false;
+            //Hide();
         }
+
+        public FormSettings Settings
+        {
+            get { return m_SettingsForm; }
+
+        }
+
 
         protected override void OnShown(EventArgs e)
         {
-            base.OnShown(e);
+            Visible = false;
+            base.OnShown(e);  
+           // Hide();
             //m_SettingsForm.Visible = true;
             m_SettingsForm.ShowDialog();
-            Visible = true;
             m_buttonBoardMatrix = new BoardButton[m_SettingsForm.m_UserChoiceBoardSize, m_SettingsForm.m_UserChoiceBoardSize];
-            setBoard();
+            this.labelScore1.Left = this.labelPlayer1.Width+labelPlayer1.Left;
+            setBoard(); 
             m_Game = m_SettingsForm.m_Game;
-            labelPlayer1.Text = m_Game.m_player1.m_Name;
+            if (m_Game==null)
+            {
+                Application.Exit();
+            }
+            labelPlayer1.Text = m_Game.m_Player1.m_Name;
             labelPlayer1.Text += ":";
-            labelPlayer2.Text = m_Game.m_player2.m_Name;
+            labelPlayer2.Text = m_Game.m_Player2.m_Name;
             labelPlayer2.Text += ":";
-            m_CurrentPlayer = m_Game.m_player1;
-            m_OtherPlayer = m_Game.m_player2;
+            m_CurrentPlayer = m_Game.m_Player1;
+            m_OtherPlayer = m_Game.m_Player2;
+            
+            Visible = true;
         }
 
         private void FormBoard_Load(object sender, EventArgs e)
         {
-            
+            //Visible = false;
+         //   Enabled = false;
         }
 
         private void setBoard()
@@ -93,7 +111,7 @@ namespace UI
 
             if (m_CurrentPlayer.IsComputer())
             {
-                m_Game.AIChooseComputerCordinates(out row, out col, m_SettingsForm.m_UserChoiceBoardSize, m_Game.m_board);
+                m_Game.AIChooseComputerCordinates(out row, out col, m_SettingsForm.m_UserChoiceBoardSize, m_Game.m_Board);
                 m_Game.MakeMove(row, col, m_CurrentPlayer.m_Sign);
                 button = m_buttonBoardMatrix[row, col];
                 button.Enabled = false;
@@ -118,16 +136,16 @@ namespace UI
                 switch (m_OtherPlayer.m_Sign)
                 {
                     case Player.e_Sign.X:   // "Player1"
-                        currPoints = int.Parse(score1.Text);
-                        score1.Text = (++currPoints).ToString();
+                        currPoints = int.Parse(labelScore1.Text);
+                        labelScore1.Text = (++currPoints).ToString();
                         break;
                     case Player.e_Sign.O:   // "Player2"
-                        currPoints = int.Parse(score2.Text);
-                        score2.Text = (++currPoints).ToString();
+                        currPoints = int.Parse(labelScore2.Text);
+                        labelScore2.Text = (++currPoints).ToString();
                         break;
                 }
 
-                if(!m_Game.m_board.IsFull()) // Win, no TIE
+                if(!m_Game.m_Board.IsFull()) // Win, no TIE
                 {
                     dialogText = new StringBuilder("The winner is ");
                     dialogText.AppendLine(m_OtherPlayer.m_Name);
@@ -146,7 +164,7 @@ namespace UI
                 }
             }
 
-            if (m_Game.m_board.IsFull())    // with or without a WIN - T I E
+            if (m_Game.m_Board.IsFull())    // with or without a WIN - T I E
             {
                 dialogText = new StringBuilder("Tie!");
                 dialogText.AppendLine();
@@ -168,6 +186,26 @@ namespace UI
         private void timer1_Tick(object sender, EventArgs e)
         {
 
+        }
+
+        private void boardLayOut_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void labelPlayer2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelPlayer1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void score1_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private void clearGameBoardMatrix()

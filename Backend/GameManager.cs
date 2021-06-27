@@ -5,10 +5,10 @@ namespace Backend
     public class GameManager
     {
         const bool v_PlayerIsComputer = true;
-        private bool m_roundNotOver = true;
-        public Backend.Board m_board { get; private set; }
-        public Player m_player1 { get; set; }
-        public Player m_player2 { get; set; }
+        private bool m_RoundNotOver = true;
+        public Backend.Board m_Board { get; private set; }
+        public Player m_Player1 { get; set; }
+        public Player m_Player2 { get; set; }
 
         private Random m_RndAIchoice;
         private Random m_RndEdgesCol;
@@ -20,44 +20,43 @@ namespace Backend
             P2C //player vs Computer
         }
 
-        public GameManager(eGameType i_gameType, int i_boardSize, Backend.Board i_gameBoard, Player i_FirstPlayer, Player i_SecondPlayer = null)   // DEFAULT PARAM
+        public GameManager(eGameType i_GameType, int i_BoardSize, Backend.Board i_GameBoard, Player i_FirstPlayer, Player i_SecondPlayer = null)   // DEFAULT PARAM
         {
-            m_board = i_gameBoard;
-            m_player1 = i_FirstPlayer;
-            if (i_gameType == eGameType.P2C)
+            m_Board = i_GameBoard;
+            m_Player1 = i_FirstPlayer;
+            if (i_GameType == eGameType.P2C)
             {
-                m_player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, v_PlayerIsComputer, "Computer");
+                m_Player2 = new Player(Player.e_Sign.O, Player.e_InitialTurn.Second, v_PlayerIsComputer, "Computer");
                 m_RndAIchoice = new Random();
                 m_RndEdgesCol = new Random();
                 m_RndEdgesRow = new Random();
             }
             else
-                m_player2 = i_SecondPlayer;
+                m_Player2 = i_SecondPlayer;
         }
 
         public bool IsValidCell(int i_Row, int i_Col)
         {
-            return m_board.IsInBound(i_Row, i_Col) && m_board.IsEmptyCell(i_Row, i_Col);
+            return m_Board.IsInBound(i_Row, i_Col) && m_Board.IsEmptyCell(i_Row, i_Col);
         }
 
-        /*AI priority:
-         * dont block other player
-         * 
-         */
+        //*AI idea:
+         //* dont block other player
+
         public void MakeMove(int i_Row, int i_Col, Player.e_Sign i_Sign)
         {
-            m_board.SetCell(i_Row, i_Col, i_Sign);
+            m_Board.SetCell(i_Row, i_Col, i_Sign);
         }
 
-        public void SetPlayerWon(Player io_winningPlayer)   // Didn't get the idea of this
+        public void SetPlayerWon(Player io_WinningPlayer)  
         {
-            m_roundNotOver = false;
-            io_winningPlayer.m_Points++;
+            m_RoundNotOver = false;
+            io_WinningPlayer.m_Points++;
         }
 
         public void NewRound()
         {
-            m_board.ClearBoard();
+            m_Board.ClearBoard();
         }
 
         public string EndGame()
@@ -72,24 +71,24 @@ namespace Backend
         {
             bool isFullDiagonal = false;
             int countSignAppearences = 0;
-            for (int i = 0; i < m_board.GetNumOfRows(); i++)
+            for (int i = 0; i < m_Board.GetNumOfRows(); i++)
             {
-                if (m_board.GetCellContent(i, i) == (int)i_SignToCheck)
+                if (m_Board.GetCellContent(i, i) == (int)i_SignToCheck)
                     countSignAppearences++;
             }
 
-            if (countSignAppearences == m_board.GetNumOfRows())
+            if (countSignAppearences == m_Board.GetNumOfRows())
                 isFullDiagonal = true;
             else
             {
                 countSignAppearences = 0;
-                for (int i = m_board.GetNumOfRows() - 1, j = 0; i >= 0 && j < m_board.GetNumOfRows(); i--, j++)
+                for (int i = m_Board.GetNumOfRows() - 1, j = 0; i >= 0 && j < m_Board.GetNumOfRows(); i--, j++)
                 {
-                    if (m_board.GetCellContent(j, i) == (int)i_SignToCheck)
+                    if (m_Board.GetCellContent(j, i) == (int)i_SignToCheck)
                         countSignAppearences++;
                 }
 
-                if (countSignAppearences == m_board.GetNumOfRows())
+                if (countSignAppearences == m_Board.GetNumOfRows())
                     isFullDiagonal = true;
             }
 
@@ -100,15 +99,15 @@ namespace Backend
         {
             bool isFullRowOfSigns = false;
             int countSignAppearences = 0;
-            for (int i = 0; i < m_board.GetNumOfRows(); i++)
+            for (int i = 0; i < m_Board.GetNumOfRows(); i++)
             {
-                for (int j = 0; j < m_board.GetNumOfRows(); j++)
+                for (int j = 0; j < m_Board.GetNumOfRows(); j++)
                 {
-                    if (m_board.GetCellContent(i, j) == (int)i_SignToCheck)
+                    if (m_Board.GetCellContent(i, j) == (int)i_SignToCheck)
                         countSignAppearences++;
                 }
 
-                if (countSignAppearences == m_board.GetNumOfRows())
+                if (countSignAppearences == m_Board.GetNumOfRows())
                 {
                     isFullRowOfSigns = true;
                     break;
@@ -124,15 +123,15 @@ namespace Backend
         {
             bool isFullColOfSigns = false;
             int countSignAppearences = 0;
-            for (int i = 0; i < m_board.GetNumOfRows(); i++)
+            for (int i = 0; i < m_Board.GetNumOfRows(); i++)
             {
-                for (int j = 0; j < m_board.GetNumOfRows(); j++)
+                for (int j = 0; j < m_Board.GetNumOfRows(); j++)
                 {
-                    if (m_board.GetCellContent(j, i) == (int)i_SignToCheck)
+                    if (m_Board.GetCellContent(j, i) == (int)i_SignToCheck)
                         countSignAppearences++;
                 }
 
-                if (countSignAppearences == m_board.GetNumOfRows())
+                if (countSignAppearences == m_Board.GetNumOfRows())
                 {
                     isFullColOfSigns = true;
                     break;
@@ -144,8 +143,7 @@ namespace Backend
             return isFullColOfSigns;
         }
 
-        // I think it should e checked for a spesific e_Sign (X / O)
-        // There's a chance that this all checking thing should be in board class
+
         public bool CheckForSequence(Player.e_Sign i_SignToCheck)
         {
             return checkHorizontalSequence(i_SignToCheck) || checkVerticalSequence(i_SignToCheck) || checkDiagonalSequence(i_SignToCheck);
@@ -211,7 +209,7 @@ namespace Backend
         {
             string scoreString = "The Game Score, at this point, is:" + Environment.NewLine;
             scoreString += string.Format("Player 1 (plays with X) with: {0} points{1}Player 2 (plays with O) with: {2} points{3}"
-                , m_player1.m_Points, Environment.NewLine, m_player2.m_Points, Environment.NewLine);
+                , m_Player1.m_Points, Environment.NewLine, m_Player2.m_Points, Environment.NewLine);
 
             return scoreString;
         }
